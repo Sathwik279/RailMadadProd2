@@ -22,7 +22,10 @@ module.exports = (sequelize, DataTypes) => {
       uploadedFilePaths,
       category,
       department,
-      urgency
+      urgency,
+      station,
+      platform,
+      pnrNo
     ) {
       try {
         const issue = await Issue.create({
@@ -35,9 +38,9 @@ module.exports = (sequelize, DataTypes) => {
           completed: 1,
           userId: userId,
           imageLinks: uploadedFilePaths,
-          station: request.body.station,
-          platform: request.body.platform,
-          pnrNo: request.body.pnrNo,
+          station: station,
+          platform: platform,
+          pnrNo: pnrNo,
         });
         return issue;
       } catch (error) {

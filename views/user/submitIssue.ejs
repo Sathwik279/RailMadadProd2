@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Rail Madad User Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" href="/images/train.png" type="image/png" />
+
   </head>
   <body class="bg-gray-100 min-h-screen flex flex-col">
     <!-- Sidebar -->
@@ -56,16 +58,16 @@
             <!--Issue location-->
             <div>
               <label
-                for="station"
+                for="stationOrTrain"
                 class="block text-lg font-medium text-gray-700"
-                >Issue Station:</label
+                >Issue Station or Issue Train details</label
               >
               <textarea
-                id="station"
-                name="station"
+                id="stationOrTrain"
+                name="stationOrTrain"
                 rows="6"
                 class="mt-2 p-4 block w-full rounded-md border border-gray-300 focus:ring-purple-500 focus:border-purple-500 shadow-sm"
-                placeholder="Enter the station where the issue happened"
+                placeholder="Enter the station or Train where the issue happened"
                 required
               ></textarea>
             </div>
@@ -73,7 +75,7 @@
               <label
                 for="platform"
                 class="block text-lg font-medium text-gray-700"
-                >Issue platform:</label
+                >Issue platform: (optional)</label
               >
               <textarea
                 id="platform"
@@ -81,7 +83,7 @@
                 rows="6"
                 class="mt-2 p-4 block w-full rounded-md border border-gray-300 focus:ring-purple-500 focus:border-purple-500 shadow-sm"
                 placeholder="Enter the platform where the issue is there"
-                required
+                value=""
               ></textarea>
             </div>
             <div>
@@ -93,7 +95,7 @@
                 name="pnrNo"
                 rows="6"
                 class="mt-2 p-4 block w-full rounded-md border border-gray-300 focus:ring-purple-500 focus:border-purple-500 shadow-sm"
-                placeholder="Enter the pnrNo of your issue"
+                placeholder="Enter the PNR number of your issue"
                 required
               ></textarea>
             </div>

@@ -300,8 +300,8 @@ app.post(
 
   async (request, response) => {
     try {
-      console.log("Creating a todo", request.body);
-      console.log(request.user);
+      // console.log("Creating a todo", request.body);
+      // console.log(request.user);
 
       const title = request.body.title;
       const desc = request.body.desc;
@@ -309,7 +309,8 @@ app.post(
       const files = request.files; // Get uploaded files
       const mediaType = request.body.mediaType; // Get selected media type
       //loc attributes
-      const station = request.body.station;
+      const station = request.body.stationOrTrain;
+      console.log("station", station);
       const platform = request.body.platform;
       const pnrNo = request.body.pnrNo;
       let category = "";
@@ -337,14 +338,14 @@ app.post(
         }
       }
 
-      console.log("category", category);
+      // console.log("category", category);
       const department = routeComplaint(category);
-      console.log("department", department);
+      // console.log("department", department);
 
-      console.log("received files", files);
+      // console.log("received files", files);
       const uploadedFilePaths = files.map((file) => file.path);
 
-      console.log("uploadedFilePaths", uploadedFilePaths);
+      // console.log("uploadedFilePaths", uploadedFilePaths);
       const loggedInUser = request.user.id;
       const secId = nanoid(4); // Generates a random UUID
       const today = new Date();
@@ -354,7 +355,7 @@ app.post(
       const dateNum = `${year}${month}${day}`;
 
       const dateString = `${year}${month}${day}`;
-      console.log(dateString); // Example output: "20240928"
+      // console.log(dateString); // Example output: "20240928"
 
       const issue = await Issue.addIssue(
         dateNum,
