@@ -15,7 +15,7 @@ const bcrypt = require("bcrypt");
 const flash = require("connect-flash");
 const multer = require("multer");
 
-const { analyzeText ,getPriority} = require("./nlpUtils");
+const { analyzeText, getPriority } = require("./nlpUtils");
 const { analyzeImage } = require("./imageUtils");
 const { routeComplaint } = require("./routingLogic");
 
@@ -136,7 +136,7 @@ app.get(
   async (request, response) => {
     const loggedInUser = request.user.id;
     const role = request.user.role;
-    const totalIssues = await Issue.getIssues();
+    const totalIssues = await Issue.getAllIssues();
     const totalIssuesCount = totalIssues.length;
     const totalUncompletedIssues = totalIssues.filter((totalIssue) => {
       if (totalIssue.completed === 1) {
@@ -151,7 +151,7 @@ app.get(
     const totalUncompletedIssuesCount = totalUncompletedIssues.length;
     const totalCompletedIssuesCount = totalCompletedIssues.length;
     console.log("totalIssues", totalIssues);
-    const issues = await Issue.getIssues(loggedInUser);
+
     const alertMessage = request.session.alertMessage || null; // Get alert message from session
     const departmentMap = await Issue.groupByDepartment();
     console.log(departmentMap);
@@ -160,7 +160,7 @@ app.get(
     // response.json(issues);
     if (request.accepts("html")) {
       response.render("./admin/admin", {
-        issues,
+        totalIssues,
         totalIssuesCount,
         totalUncompletedIssuesCount,
         totalCompletedIssuesCount,
@@ -180,17 +180,19 @@ app.get(
   "/user",
   connectEnsureLogin.ensureLoggedIn(),
   async (request, response) => {
-    const loggedInUser = request.user.id;
+    const userId = request.user.id;
     const role = request.user.role;
-    const issues = await Issue.getIssues(loggedInUser);
-    const allIssues = await Issue.getIssues();
+    console.log("userId", userId);
+    //till here works fine
+    const issues = await Issue.getIssues(userId);
+    console.log(`Logged in userId${userId}`);
+    console.log("issues", issues);
     const alertMessage = request.session.alertMessage || null; // Get alert message from session
     request.session.alertMessage = null; // Clear the message after retrieval
     // response.json(issues);
     if (request.accepts("html")) {
       response.render("./user/user", {
         issues,
-        allIssues,
         role,
         alertMessage,
       });
@@ -205,7 +207,7 @@ app.get(
   "/user/submitIssue",
   connectEnsureLogin.ensureLoggedIn(),
   async (request, response) => {
-    response.render("user/submitIssue");
+    response.render("./user/submitIssue");
   }
 );
 app.get(
@@ -214,15 +216,15 @@ app.get(
   async (request, response) => {
     const loggedInUser = request.user.id;
     const role = request.user.role;
-    const issues = await Issue.getIssues(loggedInUser);
-    const allIssues = await Issue.getIssues();
+    const issues = await Issue.getIssues(loggedInUser); //this is the important line
+    console.log(`Logged in user${loggedInUser} Role${role}`);
+    console.log("issues", issues);
     const alertMessage = request.session.alertMessage || null; // Get alert message from session
     request.session.alertMessage = null; // Clear the message after retrieval
     // response.json(issues);
     if (request.accepts("html")) {
       response.render("user/issueStatus", {
         issues,
-        allIssues,
         role,
         alertMessage,
       });
@@ -244,7 +246,8 @@ app.get(
   "/user/feedback",
   connectEnsureLogin.ensureLoggedIn(),
   async (request, response) => {
-    const allIssues = await Issue.getIssues();
+    const userId = request.user.id;
+    const allIssues = await Issue.getIssues(userId);
     const completedIssues = allIssues.filter((issue) => issue.completed === 2);
     response.render("user/feedback", {
       completedIssues,
@@ -333,7 +336,7 @@ app.post(
         department,
         urgency
       );
-      request.session.alertMessage = `issue created Department:${department}  ID:${issue.id}`;
+      request.session.alertMessage = `issue created Department:${department}  ID:${issue.secondaryId}`;
       response.redirect("user/issueStatus");
     } catch (error) {
       console.error("Error adding issue:", error);

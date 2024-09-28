@@ -33,7 +33,7 @@ module.exports = (sequelize, DataTypes) => {
           category: category,
           urgency: urgency,
           completed: 1,
-          userId,
+          userId: userId,
           imageLinks: uploadedFilePaths,
         });
         return issue;
@@ -55,16 +55,19 @@ module.exports = (sequelize, DataTypes) => {
       });
     }
 
-    static async getIssues(id) {
+    static async getIssues(userId) {
+      console.log(`Querying for issues where userId = ${userId}`);
       return this.findAll({
         where: {
-          userId: id,
+          userId: userId,
         },
       });
     }
-    static async getIssues() {
-      return this.findAll({});
+
+    static async getAllIssues() {
+      return this.findAll();
     }
+
     static async setFeedBack(id, feedback) {
       const issue = await Issue.findByPk(id);
       issue.feedback = feedback;
@@ -77,15 +80,15 @@ module.exports = (sequelize, DataTypes) => {
       const departmentMap = new Map();
 
       issues.forEach((issue) => {
-      if (!departmentMap.has(issue.department)) {
-        departmentMap.set(issue.department, []);
-      }
-      departmentMap.get(issue.department).push(issue);
+        if (!departmentMap.has(issue.department)) {
+          departmentMap.set(issue.department, []);
+        }
+        departmentMap.get(issue.department).push(issue);
       });
 
       // Sort each department's issues by urgency
       departmentMap.forEach((issuesArray, department) => {
-      issuesArray.sort((a, b) => a.urgency - b.urgency);
+        issuesArray.sort((a, b) => a.urgency - b.urgency);
       });
 
       return departmentMap;
