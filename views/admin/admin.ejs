@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      function markAsCompleted(id) {
+        fetch(`/issues/${id}`, {
+          method: "put",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            status: "updateStatus",
+          }),
+        })
+          .then((res) => {
+            if (res.ok) {
+              window.location.reload(); //this line ensures page reload after deletion
+            }
+          })
+          .catch((err) => console.error(err));
+      }
+    </script>
+  </head>
+  <body class="bg-gray-100">
+    <button
+      onClick="window.location.href='/signout'"
+      class="bg-red-600 text-white font-semibold py-2 px-4 rounded-lg shadow-lg hover:bg-red-700 transition duration-300 ease-in-out mt-4 mb-6"
+    >
+      Sign Out
+    </button>
+    <div class="container mx-auto px-4 py-8">
+      <!-- Dashboard Header -->
+      <header class="text-center mb-12">
+        <h1 class="text-4xl font-bold text-gray-800">
+          Rail Madad Admin Dashboard
+        </h1>
+        <p class="text-gray-600 mt-4">
+          Efficiently manage and categorize complaints
+        </p>
+      </header>
+
+      <!-- Dashboard Overview -->
+      <section id="dashboard-overview" class="mb-12">
+        <h2 class="text-2xl font-semibold text-gray-700 mb-6">
+          Dashboard Overview
+        </h2>
+        <div class="grid grid-cols-3 gap-6">
+          <div class="bg-blue-500 text-white p-6 rounded-lg shadow-lg">
+            <h3 class="text-xl font-bold">Total Complaints</h3>
+            <p id="total-complaints" class="text-4xl mt-2">
+              <%=totalIssuesCount%>
+            </p>
+          </div>
+          <div class="bg-yellow-500 text-white p-6 rounded-lg shadow-lg">
+            <h3 class="text-xl font-bold">In Progress</h3>
+            <p id="in-progress-complaints" class="text-4xl mt-2">
+              <%=totalUncompletedIssuesCount%>
+            </p>
+          </div>
+          <div class="bg-green-500 text-white p-6 rounded-lg shadow-lg">
+            <h3 class="text-xl font-bold">Resolved</h3>
+            <p id="resolved-complaints" class="text-4xl mt-2">
+              <%=totalCompletedIssuesCount%>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Complaint Assignment and Categorization -->
+      <section id="complaint-categorization" class="mb-12">
+        <h2 class="text-2xl font-semibold text-gray-700 mb-6">
+          Complaint Categorization & Assignment
+        </h2>
+        <div class="overflow-x-auto"><%-include('../issue.ejs')%></div>
+      </section>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

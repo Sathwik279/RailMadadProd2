@@ -1,0 +1,85 @@
+<% if (role === 'user') { %> <% issues.forEach(function(issue){ %>
+<tr>
+  <td class="border px-4 py-2"><%= issue.title %></td>
+  <td class="border px-4 py-2"><%= issue.desc %></td>
+  <td class="border px-4 py-2"><%= issue.createdAt %></td>
+  <td class="border px-4 py-2">
+    <%= (issue.completed ===1)? 'Pending' : 'Completed' %>
+  </td>
+  <td class="border px-4 py-2">
+    <a href="#" class="ml-2 trash-icon" onClick="deleteTodo('<%=issue.id%>')">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        height="24px"
+        viewBox="0 -960 960 960"
+        width="24px"
+        fill="#000000"
+      >
+        <path
+          d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"
+        />
+      </svg>
+    </a>
+  </td>
+</tr>
+<% }) %> <% } else if(role === 'admin') { %> <%
+departmentMap.forEach(function(issues, department) { %>
+<div class="mb-8">
+  <h2 class="text-3xl font-semibold text-gray-800 mb-4"><%= department %></h2>
+  <table
+    class="min-w-full bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden"
+  >
+    <thead class="bg-blue-600 text-white">
+      <tr>
+        <th class="px-6 py-4 text-left">Complaint ID</th>
+        <th class="px-6 py-4 text-left">Status</th>
+        <th class="px-6 py-4 text-left">Creation Date</th>
+        <th class="px-6 py-4 text-left">Urgency</th>
+        <th class="px-6 py-4 text-left">Description</th>
+        <th class="px-6 py-4 text-left">Department allocated</th>
+        <th class="px-6 py-4 text-left">title</th>
+        <th class="px-6 py-4 text-left">Change Status</th>
+        <th class="px-6 py-4 text-left">Feedback</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% issues.forEach(function(issue) { %>
+      <tr class="hover:bg-gray-100 transition duration-200">
+        <td class="border px-6 py-4"><%= issue.secondaryId %></td>
+        <td class="border px-6 py-4">
+          <span
+            class="<%= (issue.completed === 1) ? 'text-red-500 font-bold' : 'text-green-500 font-bold' %>"
+          >
+            <%= (issue.completed === 1) ? 'Pending' : 'Completed' %>
+            <%=issue.completed%>
+          </span>
+        </td>
+        <td class="border px-6 py-4"><%= issue.createdAt %></td>
+        <td class="border px-6 py-4"><%= issue.urgency %></td>
+        <td class="border px-6 py-4"><%= issue.desc %></td>
+        <td class="border px-6 py-4"><%= issue.department %></td>
+        <td class="border px-6 py-4"><%= issue.title %></td>
+
+        <td class="border px-6 py-4">
+          <a href="" onClick="markAsCompleted('<%=issue.id%>')"
+            ><svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="24px"
+              viewBox="0 -960 960 960"
+              width="24px"
+              fill="#000000"
+            >
+              <path
+                d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z"
+              /></svg
+          ></a>
+        </td>
+        <% if (issue.completed === 2) { %>
+        <td class="px-6 py-4 text-left"><%=issue.feedback%></td>
+        <% } %>
+      </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>
+<% }) %> <% } %>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rail Madad User Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+  </head>
+  <body class="bg-gray-100 min-h-screen flex flex-col"></body>
+<%-include('../sideBars/userSide.ejs')%>
+<!-- Section: Feedback -->
+<section id="feedback" class="mb-12">
+  <div class="bg-white p-8 rounded-lg shadow-lg max-w-2xl mx-auto">
+    <h1 class="text-3xl font-bold text-gray-800 mb-6">Feedback</h1>
+    <p class="text-gray-700">
+      Please provide your feedback on the Issue resolution process. Your
+      feedback helps us improve our services.
+    </p>
+    <table class="table-auto w-full mt-8 mb-6">
+      <thead>
+        <tr class="bg-gray-200">
+          <th class="px-6 py-3 text-left text-gray-700 font-semibold">
+            Issue ID
+            </th>
+          <th class="px-6 py-3 text-left text-gray-700 font-semibold">
+            Title
+          </th>
+          <th class="px-6 py-3 text-left text-gray-700 font-semibold">
+            Completion Status
+          </th>
+          <th class="px-6 py-3 text-left text-gray-700 font-semibold">
+            Feedback
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <% completedIssues.forEach(function(issue){ %>
+          <tr>
+            <td class="border px-4 py-2"><%= issue.id %></td>
+            <td class="border px-4 py-2"><%= issue.title %></td>
+            <td class="border px-4 py-2">
+              <%= (issue.completed ===1)? 'Pending' : 'Completed' %>
+            </td>
+            <td class="border px-4 py-2">
+              <form method="post" action="/issues/feedback">
+                <input type="hidden" name="idVal" value="<%=issue.id%>">
+                <input type="text" name="feedback" value="<%=issue.feedback%>">
+                <button type="submit">Submit</button>
+              </form>
+            </td>
+          </tr>
+          <% }) %>
+      </tbody>
+    </table>
+    
+    <div id="feedbackResponse" class="mt-6 text-center text-gray-700"></div>
+  </div>
+</section>
+</body>
+</html>

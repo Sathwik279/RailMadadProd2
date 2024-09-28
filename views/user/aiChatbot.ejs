@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Rail Madad Chatbot</title>
+    <link rel="stylesheet" href="chatbotStyles.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Railbot</h1>
+    </header>
+    <main>
+      <div id="chat-container">
+        <div id="chat-window">
+          <!-- Chat messages will be dynamically added here -->
+        </div>
+        <div id="chat-input">
+          <button id="upload-button">
+            <img src="./icons/plus-icon.png" alt="Upload" />
+          </button>
+          <input
+            id="user-input"
+            type="text"
+            placeholder="Type your message..."
+          />
+          <button id="send-button">
+            <img src="./icons/send-icon.png" alt="Send" />
+          </button>
+        </div>
+      </div>
+    </main>
+    <input
+      type="file"
+      id="file-upload"
+      accept="image/*,video/*"
+      style="display: none"
+    />
+    <script src="chatbotScript.js"></script>
+  </body>
+</html>
