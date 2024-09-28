@@ -97,7 +97,7 @@ passport.deserializeUser((id, done) => {
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, "images")); // Save in the images folder
+    cb(null, path.join(__dirname, "./public/images")); // Save in the public/images folder
   },
   filename: function (req, file, cb) {
     const timestamp = Date.now(); // Unique timestamp for file names
@@ -107,6 +107,21 @@ const storage = multer.diskStorage({
     cb(null, `${userId}-${timestamp}-${originalName}${fileExtension}`); // Store with user ID, timestamp, and original file name
   },
 });
+
+function getImagePath(fullPath) {
+  // Define the base directory for images
+  const imagesDir = path.join(__dirname, "public", "images");
+
+  // Check if the full path starts with the images directory
+  if (fullPath.startsWith(imagesDir)) {
+    // Extract the relative path
+    const relativePath = path.relative(imagesDir, fullPath);
+    return `/images/${relativePath}`;
+  }
+
+  // Return null or an error if the path is not valid
+  return null;
+}
 
 // Set up multer middleware
 const upload = multer({ storage: storage });
@@ -265,6 +280,19 @@ app.get("/signout", (request, response, next) => {
   });
 });
 
+app.post("/admin/issueDetails", async (request, response) => {
+  const issue = await Issue.findByPk(request.body.issueId);
+  const images = issue.imageLinks.map((link) => {
+    return getImagePath(link);
+  });
+  console.log("images", images);
+  response.render("admin/issueDetails", {
+    issueId: request.body.issueId,
+    issue: issue,
+    images: images,
+  });
+});
+
 app.post(
   "/issues",
   connectEnsureLogin.ensureLoggedIn(),
@@ -280,7 +308,10 @@ app.post(
       const urgency = getPriority(desc);
       const files = request.files; // Get uploaded files
       const mediaType = request.body.mediaType; // Get selected media type
-
+      //loc attributes
+      const station = request.body.station;
+      const platform = request.body.platform;
+      const pnrNo = request.body.pnrNo;
       let category = "";
       if (desc) {
         category = await analyzeText(desc); // Use the description for analysis
@@ -334,7 +365,10 @@ app.post(
         uploadedFilePaths,
         category,
         department,
-        urgency
+        urgency,
+        station,
+        platform,
+        pnrNo
       );
       request.session.alertMessage = `issue created Department:${department}  ID:${issue.secondaryId}`;
       response.redirect("user/issueStatus");

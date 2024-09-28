@@ -35,6 +35,9 @@ module.exports = (sequelize, DataTypes) => {
           completed: 1,
           userId: userId,
           imageLinks: uploadedFilePaths,
+          station: request.body.station,
+          platform: request.body.platform,
+          pnrNo: request.body.pnrNo,
         });
         return issue;
       } catch (error) {
@@ -105,6 +108,9 @@ module.exports = (sequelize, DataTypes) => {
       completed: DataTypes.INTEGER,
       imageLinks: ARRAY(DataTypes.STRING),
       feedback: DataTypes.STRING,
+      station: DataTypes.STRING,
+      platform: DataTypes.STRING,
+      pnrNo: DataTypes.STRING,
     },
     {
       sequelize,

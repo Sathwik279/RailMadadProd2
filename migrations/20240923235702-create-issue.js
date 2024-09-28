@@ -9,9 +9,9 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      secondaryId:{
-        allowNull:false,
-        type:Sequelize.STRING,
+      secondaryId: {
+        allowNull: false,
+        type: Sequelize.STRING,
       },
       title: {
         type: Sequelize.STRING,
@@ -35,6 +35,15 @@ module.exports = {
         type: Sequelize.ARRAY(Sequelize.STRING),
       },
       feedback: {
+        type: Sequelize.STRING,
+      },
+      station: {
+        type: Sequelize.STRING,
+      },
+      platform: {
+        type: Sequelize.STRING,
+      },
+      pnrNo: {
         type: Sequelize.STRING,
       },
 

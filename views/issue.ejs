@@ -39,7 +39,9 @@ departmentMap.forEach(function(issues, department) { %>
         <th class="px-6 py-4 text-left">Department allocated</th>
         <th class="px-6 py-4 text-left">title</th>
         <th class="px-6 py-4 text-left">Change Status</th>
+        <th class="px-6 py-4 text-left">Display in Detail</th>
         <th class="px-6 py-4 text-left">Feedback</th>
+        
       </tr>
     </thead>
     <tbody>
@@ -51,7 +53,6 @@ departmentMap.forEach(function(issues, department) { %>
             class="<%= (issue.completed === 1) ? 'text-red-500 font-bold' : 'text-green-500 font-bold' %>"
           >
             <%= (issue.completed === 1) ? 'Pending' : 'Completed' %>
-            <%=issue.completed%>
           </span>
         </td>
         <td class="border px-6 py-4"><%= issue.createdAt %></td>
@@ -74,6 +75,13 @@ departmentMap.forEach(function(issues, department) { %>
               /></svg
           ></a>
         </td>
+        <td class="border px-6 py-4">
+          <form action="/admin/issueDetails" method="post">
+            <input type="hidden" name="issueId" value="<%= issue.id %>">
+            <button type="submit">Form</button>
+          </form>
+        </td>
+
         <% if (issue.completed === 2) { %>
         <td class="px-6 py-4 text-left"><%=issue.feedback%></td>
         <% } %>
