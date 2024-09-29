@@ -26,7 +26,7 @@ module.exports = {
         type: Sequelize.STRING,
       },
       urgency: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
       },
       completed: {
         type: Sequelize.INTEGER,

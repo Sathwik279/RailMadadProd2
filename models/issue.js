@@ -107,7 +107,7 @@ module.exports = (sequelize, DataTypes) => {
       desc: DataTypes.STRING,
       category: DataTypes.STRING,
       department: DataTypes.STRING,
-      urgency: DataTypes.INTEGER,
+      urgency: DataTypes.STRING,
       completed: DataTypes.INTEGER,
       imageLinks: ARRAY(DataTypes.STRING),
       feedback: DataTypes.STRING,
